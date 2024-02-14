@@ -1,0 +1,652 @@
+#include <iostream>
+#include <string>
+#include <ctime>
+#include <cstdlib>
+using namespace std;
+#define RESET   "\033[0m"
+#define GREEN   "\033[32m"
+int HazLaApuesta() {
+    //Realizar la Apuesta
+    int valorApuesta;
+    bool seguro = false;
+    while (!seguro) {
+        cout << "Cuanto quieres apostar? ";
+        cin >> valorApuesta;
+        cout << "Tu apuesta es de: " << valorApuesta << " Quieres continuar? (s/n) ";
+        string continuar;
+        cin >> continuar;
+        if (continuar == "s") {
+            seguro = true;
+        }
+        if (continuar == "n") {
+            seguro = false;
+        }
+    }
+    //Apuesa realizada
+    return valorApuesta;
+}
+
+//GENERAR CARTAS
+int GenerarCarta() {
+    int numRandom = rand() % 52;
+    int cartas[] = { 1,2,3,4,5,6,7,8,9,10,10,10,10,1,2,3,4,5,6,7,8,9,10,10,10,10,1,2,3,4,5,6,7,8,9,10,10,10,10,1,2,3,4,5,6,7,8,9,10,10,10,10 };
+
+    return cartas[numRandom];
+}
+
+string GenerarPalo() {
+    int palo = rand() % 4;
+    string palos[] = { "Diamantes","Corazones","Picas","Treboles" };
+
+    return palos[palo];
+}
+
+string jqk() {
+    int palo = rand() % 4;
+    string ele[] = { "10","J","Q","K" };
+    return ele[palo];
+}
+
+
+
+//PEDIR CARTA O QUEDARTE
+int PedirCarta() {
+    int carta;
+    string palo;
+    string ele;
+
+    carta = GenerarCarta();
+    palo = GenerarPalo();
+    ele = jqk();
+    
+    if (carta == 10) {
+        cout << "Tu carta es: " << ele << " " << palo << "\n";
+    }
+    else {
+        cout << "Tu carta es: "  << carta << " " << palo ;
+    }
+
+    return carta;
+}
+
+int main() {
+    srand(time(NULL));
+    cout << "Bienvenido al Casino Neptun! \n";
+    bool jugar = true;
+    int apuestaRealizada;
+    while (jugar) {
+        apuestaRealizada = HazLaApuesta();
+
+        //CARTAS INICIO JUGADOR
+        //int carta1 = GenerarCarta();
+        int carta1 = GenerarCarta();
+        string palo1 = GenerarPalo();
+        //int carta2 = GenerarCarta();
+        int carta2 = GenerarCarta();
+        string palo2 = GenerarPalo();
+        string ele1 = jqk();
+        string ele2 = jqk();
+        string cele1 = jqk();
+        string cele2 = jqk();
+        //CRUPIER
+        int cartaC1 = GenerarCarta();
+        string paloC1 = GenerarPalo();
+        int cartaC2 = GenerarCarta();
+        string paloC2 = GenerarPalo();
+        int ctotal;
+        int valorA;
+
+        cout << "\nTus cartas son: \n";
+
+        //SI ES 10 PONER J,Q,K
+        
+        if (carta1 == 10) {
+            cout << ele1 << " " << palo1 << "\n";
+        }
+		else if (carta1 == 1) {
+			cout << "A" << " " << palo1 << "\n";
+			cout << "Que valor quieres que tenga A? (1 o 11): ";
+			cin >> valorA;
+			if (valorA == 1 || valorA == 11) {
+				carta1 = valorA;
+                ele1 = "A";
+			}
+		}
+        else {
+            cout << carta1 << " " << palo1 << "\n";
+        }
+      
+        if (carta2 == 10) {
+            cout << ele2 << " " << palo2 << "\n";
+        }
+		else if (carta2 == 1) {
+			cout << "A" << " " << palo2 << "\n";
+			cout << "Que valor quieres que tenga A? (1 o 11): ";
+			cin >> valorA;
+			if (valorA == 1 || valorA == 11) {
+				carta2 = valorA;
+                ele2 = "A";
+			}
+		}
+        else {
+            cout << carta2 << " " << palo2 << "\n";
+        }
+		int total = carta1 + carta2;
+
+
+        //SEPARAR
+        if (carta1 == carta2) {
+            int separar;
+            int total2;
+            int total3;
+
+            int carta3 = GenerarCarta();
+            string palo3 = GenerarPalo();
+            int carta4 = GenerarCarta();
+            string palo4 = GenerarPalo();
+
+            cout << "\nTotal de tus cartas: " << total << "\n";
+
+            cout << "\n¿Quieres separar tus cartas? (Tu apuesta se doblará): ";
+            cout << "Si(1) / No(2) ";
+            cin >> separar;
+
+            // VARIABLES
+            bool cartaNueva = true;
+            bool cartaNueva1 = true;
+            bool cartaNueva2 = true;
+            int pedir;
+            int cartaFuncion1;
+            int cartaFuncion2;
+            int cartaFuncion3;
+            int cartaFuncion;
+
+            // SEPARAR CARTAS
+            switch (separar) {
+            case 1:
+                apuestaRealizada = apuestaRealizada * 2;
+                cout << "\nTu apuesta ahora es de: " << apuestaRealizada;
+                cout << "\nTus cartas son: \n";
+                cout << "Mano 1: \n";
+				if (carta1 == 11 || carta1 == 1) {
+					cout << ele1 << " " << palo1 << "\n";
+				}
+				else {
+					cout << carta1 << " " << palo1 << "\n";
+				}
+                cout << carta3 << " " << palo3 << "\n";
+                total2 = carta1 + carta3;
+                cout << "Total:" << total2 << "\n";
+                cout << "\nMano 2: \n";
+				if (carta2 == 10 || carta2 == 1) {
+					cout << ele2 << " " << palo2 << "\n";
+				}
+				else {
+					cout << carta2 << " " << palo2 << "\n";
+				}
+                cout << carta4 << " " << palo4 << "\n";
+                total3 = carta2 + carta4;
+                cout << "Total:" << total3 << "\n";
+
+                //CARTAS INICIO CRUPIER
+                cout << "\nLas cartas del crupier son : \n";
+
+                //SI ES 10 PONER J,Q,K
+                if (cartaC1 == 10) {
+                    cout << "Primera carta: " << cele1 << " " << paloC1 << "\n";
+
+                }
+                else if (cartaC1 != 1) {
+                    cout << "Primera carta: " << cartaC1 << " " << paloC1 << "\n";
+                }
+                //SI ES 1 PONER 1 o 11
+                if (cartaC1 == 1) {
+                    cartaC1 = 11;
+                    cout << "Primera carta: A " << paloC1 << "\n";
+
+                }
+                if (cartaC2 == 1 && cartaC1 < 10) {
+                    cartaC2 = 11;
+                }
+                else if (cartaC2 == 1 && cartaC1 > 10) {
+                    cartaC2 = 1;
+                }
+
+                cout << "Segunda carta: ?" << "\n";
+                ctotal = cartaC1 + cartaC2;
+                cout << "Total del Crupier: ?\n";
+
+                //PEDIR CARTA O QUEDARTE MANO 1
+                cartaNueva = true;
+                while (cartaNueva) {
+                    cout << "\nEn la Mano 1, quieres pedir cartas(1) o quedarte(2) ";
+                    cin >> pedir;
+                    switch (pedir) {
+                    case 1:
+                        cartaFuncion1 = PedirCarta();
+						if (cartaFuncion1 == 1) {
+							cout << "A" << " " << palo1 << "\n";
+							cout << "Que valor quieres que tenga A? (1 o 11): ";
+							cin >> valorA;
+							if (valorA == 1 || valorA == 11) {
+								cartaFuncion1 = valorA;
+								ele1 = "A";
+							}					
+                        }
+                        total2 = total2 + cartaFuncion1;
+                        cout << "\nTotal de la Mano 1: " << total2 << "\n";
+                        if (total2 > 21) {
+                            cout << "Has perdido en la Mano 1, ya que te has pasado de 21\n";
+                            cartaNueva = false;
+                        }
+                        else if (total2 == 21) {
+                            cout << "Has ganado en la Mano 1, ya que has conseguido 21\n";
+                            cartaNueva = false;
+                        }
+                        break;
+                    case 2:
+                        cartaNueva = false;
+                        break;
+                    default:
+                        cout << "Error.\n";
+
+                    }
+                }
+                //PEDIR O QUEDARTE MANO 2
+                cartaNueva2 = true;
+                while (cartaNueva2) {
+
+                    cout << "\nEn la Mano 2, quieres pedir cartas(1) o quedarte(2) ";
+                    cin >> pedir;
+                    switch (pedir) {
+                    case 1:
+                        cartaFuncion2 = PedirCarta();
+						if (cartaFuncion2 == 1) {
+							cout << "A" << " " << palo1 << "\n";
+							cout << "Que valor quieres que tenga A? (1 o 11): ";
+							cin >> valorA;
+							if (valorA == 1 || valorA == 11) {
+								cartaFuncion2 = valorA;
+								ele1 = "A";
+							}
+						}
+                        total3 = total3 + cartaFuncion2;
+                        cout << "\nTotal de la Mano 2: " << total3 << "\n";
+                        if (total3 > 21) {
+                            cout << "Has perdido en la Mano 2, ya que te has pasado de 21\n";
+                            cartaNueva2 = false;
+                        }
+                        else if (total3 == 21) {
+                            cout << "Has ganado en la Mano 2, ya que has conseguido 21\n";
+                            cartaNueva2 = false;
+                        }
+                        break;
+                    case 2:
+                        cartaNueva2 = false;
+                        break;
+                    default:
+                        cout << "Error.\n";
+
+                    }
+                }
+
+                //MANO 2 = total3
+                //MANO 1 = total2
+
+                if (total < 22 && total >= ctotal) {
+                    cout << "\nLas cartas del crupier son: \n";
+                   
+                    cout << cartaC1 << " " << paloC1 << "\n";
+                    cout << cartaC2 << " " << paloC2 << "\n";
+
+                    while (ctotal <= total2 || ctotal <= total3) {
+                        cartaFuncion3 = GenerarCarta();
+                            if (cartaFuncion3 == 1 && ctotal < 10) {
+                                cartaFuncion3 = 11;
+                            }
+                            else if (cartaFuncion3 == 1 && ctotal > 10) {
+                                cartaFuncion3 = 1;
+                            }
+                        ctotal = ctotal + cartaFuncion3;
+                        cout << "EL croupier pide una carta \n";
+                        cout << "Ha salido la carta " << cartaFuncion3 << "\n";
+                        cout << "Total: " << ctotal << "\n";
+                    }
+                    if (ctotal > 21) {
+                        cout << "Has ganado al croupier  \n";
+                        apuestaRealizada = apuestaRealizada * 2;
+                        cout << "El dinero que has apostado se ha doblado: " << apuestaRealizada << "\n";
+                    }
+                    else if (ctotal < 22 && ctotal > total2) {
+                        cout << "El croupier te ha ganado en la mano1 \n";
+                    }
+                    else if (ctotal < 22 && ctotal > total3) {
+                        cout << "El croupier te ha ganado en la mano2 \n";
+                    }
+
+                 }
+
+
+                else if (total > 21 || total < ctotal) {
+                    cout << "\nLas cartas del crupier son: \n";
+                    cout << cartaC1 << " " << paloC1 << "\n";
+                    cout << cartaC2 << " " << paloC2 << "\n";
+                    cout << "Total:" << ctotal << "\n";
+                    cout << "Has perdido el croupier gana la partida\n";
+                    apuestaRealizada = 0;
+                    cout << "El dinero que has apostado se ha perdido: " << apuestaRealizada << "\n";
+                }
+                cout << "\n¿Quieres volver ha jugar?";
+                cout << " Si(1) / No(2) ";
+                int eleccion;
+                cin >> eleccion;
+                switch (eleccion) {
+                case 1:
+                    jugar = true;
+                    break;
+                case 2:
+                    jugar = false;
+                    break;
+                default:
+                    cout << "Error";
+                }
+                break;
+
+                break;
+
+            case 2:
+                cout << "\nTotal de tus cartas: " << total << "\n";
+
+                //CARTAS INICIO CRUPIER
+                cartaC1 = GenerarCarta();
+                paloC1 = GenerarPalo();
+                cartaC2 = GenerarCarta();
+                paloC2 = GenerarPalo();
+
+
+                //CARTAS INICIO CRUPIER
+                cout << "\nLas cartas del crupier son : \n";
+
+                //SI ES 10 PONER J,Q,K
+                
+                if (cartaC1 == 10) {
+                    cout << "Primera carta: " << cele1 << " " << paloC1 << "\n";
+
+                }
+                else if (cartaC1 != 1) {
+                    cout << "Primera carta: " << cartaC1 << " " << paloC1 << "\n";
+                }
+                //SI ES 1 PONER 1 o 11
+                if (cartaC1 == 1) {
+                    cartaC1 = 11;
+                    cout << "Primera carta: A " << paloC1 << "\n";
+
+                }
+                if (cartaC2 == 1 && cartaC1 < 10) {
+                    cartaC2 = 11;
+                }
+                else if (cartaC2 == 1 && cartaC1 > 10) {
+                    cartaC2 = 1;
+                }
+                cout << "Segunda carta: A " << paloC1 << "\n";
+
+
+                //PEDIR CARTA O QUEDARTE
+                cartaNueva = true;
+                pedir;
+                cartaFuncion;
+                while (cartaNueva) {
+                    cout << "\nQuieres pedir carta(1) o quedarte(2)? ";
+                    cin >> pedir;
+                    switch (pedir) {
+                    case 1:
+                        cartaFuncion = PedirCarta();
+						if (cartaFuncion == 1) {
+							cout << "A" << " " << palo1 << "\n";
+							cout << "Que valor quieres que tenga A? (1 o 11): ";
+							cin >> valorA;
+							if (valorA == 1 || valorA == 11) {
+								cartaFuncion = valorA;
+								ele1 = "A";
+							}
+						}
+                        total = total + cartaFuncion;
+                        cout << "\nTotal: " << total << "\n";
+                        if (total > 21) {
+                            cout << "Has perdido ya que te has pasado de 21\n";
+                            cartaNueva = false;
+                        }
+                        else if (total == 21) {
+                            cout << "Has ganado ya que has conseguido 21\n";
+                            cartaNueva = false;
+                        }
+                        break;
+                    case 2:
+                        cartaNueva = false;
+                        break;
+                    default:
+                        cout << "Error.\n";
+                    }
+                }
+
+                if (total < 22 && total > ctotal) {
+                    //SI ES 10 PONER J,Q,K
+                    if (cartaC1 == 10) {
+                        cout << "Primera carta: " << cele1 << " " << paloC1 << "\n";
+
+                    }
+                    else if (cartaC1 != 1) {
+                        cout << "Primera carta: " << cartaC1 << " " << paloC1 << "\n";
+                    }
+                    //SI ES 1 PONER 1 o 11
+                    if (cartaC1 == 1) {
+                        cartaC1 = 11;
+                        cout << "Primera carta: A " << paloC1 << "\n";
+
+                    }
+                    if (cartaC2 == 1 && cartaC1 < 10) {
+                        cartaC2 = 11;
+                    }
+                    else if (cartaC2 == 1 && cartaC1 > 10) {
+                        cartaC2 = 1;
+                    }
+                    cout << "Segunda carta: A " << paloC1 << "\n";
+                    ctotal = cartaC1 + cartaC2;
+
+     
+                    while (ctotal < total) {
+                        cartaFuncion3 = GenerarCarta();
+                        if (cartaFuncion3 == 1 && ctotal < 10) {
+                        cartaFuncion3 = 11;
+                        }
+                        else if (cartaFuncion3 == 1 && ctotal > 10) {
+                            cartaFuncion3 = 1;
+                        }
+                        ctotal = ctotal + cartaFuncion3;
+                        cout << "EL croupier pide una carta \n";
+                        cout << "Ha salido la carta " << cartaFuncion3 << "\n";
+                        cout << "Total: " << ctotal << "\n";
+                        if (ctotal > 21) {
+
+                            cout << "Has ganado al croupier  \n";
+                            apuestaRealizada = apuestaRealizada * 2;
+                            cout << "El dinero que has apostado se ha doblado: " << apuestaRealizada << "\n";
+                        }
+                        else if(ctotal>total){ cout << "El croupier ha ganado\n"; }
+                    }
+                }
+
+                else if (total > 21 || total < ctotal) {
+                    cout << "\nLas cartas del crupier son: \n";
+                    if (carta1 == 1) {
+                        cout << "A" << " " << palo1 << "\n";
+                    }
+                    if (carta1 == 1) {
+                        cout << "A" << " " << palo1 << "\n";
+                    }
+                    else{
+                    cout << cartaC1 << " " << paloC1 << "\n";
+                    }
+                    if (cartaC2 == 1) {
+                        cout << "A" << " " << paloC2 << "\n";
+                    }
+                    else {
+                    cout << cartaC2 << " " << paloC2 << "\n";
+                    }
+                    cout << "Total:" << ctotal << "\n";
+                    cout << "Has perdido el croupier gana la partida\n";
+                    apuestaRealizada = 0;
+                    cout << "El dinero que has apostado se ha perdido: " << apuestaRealizada << "\n";
+                }
+                cout << "\n¿Quieres volver ha jugar?";
+                cout << " Si(1) / No(2) ";
+                eleccion;
+                cin >> eleccion;
+                switch (eleccion) {
+                case 1:
+                    jugar = true;
+                    break;
+                case 2:
+                    jugar = false;
+                    break;
+                default:
+                    cout << "Error";
+                }
+            }
+        }
+        else {
+
+            cout << "Total: " << total << "\n";
+
+            //CARTAS INICIO CRUPIER
+            cartaC1 = GenerarCarta();
+            paloC1 = GenerarPalo();
+            cartaC2 = GenerarCarta();
+            paloC2 = GenerarPalo();
+            int cartaFuncion3 = GenerarCarta();
+            //CARTAS INICIO CRUPIER
+            cout << "\nLas cartas del crupier son : \n";
+
+            //SI ES 10 PONER J,Q,K
+			if (cartaC1 == 10) {
+				cout << "Primera carta: " << cele1 << " " << paloC1 << "\n";
+
+			}
+			else if(cartaC1 != 1) {
+				cout << "Primera carta: " << cartaC1 << " " << paloC1 << "\n";
+			}
+            //SI ES 1 PONER 1 o 11
+            if (cartaC1 == 1) {
+                cartaC1 = 11;
+                cout << "Primera carta: A " << paloC1 << "\n";
+                
+            }
+            if (cartaC2 == 1 && cartaC1 <10) {
+                cartaC2 = 11;
+            }
+            else if(cartaC2 == 1 && cartaC1 > 10){
+				cartaC2 = 1;
+            }
+            
+			cout << "Segunda carta: ?" << "\n";
+			ctotal = cartaC1 + cartaC2;
+			cout << "Total del Crupier: ?\n";
+              
+            //PEDIR CARTA O QUEDARTE
+            bool cartaNueva = true;
+            int pedir;
+            int cartaFuncion;
+            while (cartaNueva) {
+                cout << "\nQuieres pedir carta(1) o quedarte(2)? ";
+                cin >> pedir;
+                switch (pedir) {
+                case 1:
+                    cartaFuncion = PedirCarta();
+					if (cartaFuncion == 1) {
+						cout << "A" << " " << palo1 << "\n";
+						cout << "Que valor quieres que tenga A? (1 o 11): ";
+						cin >> valorA;
+						if (valorA == 1 || valorA == 11) {
+							cartaFuncion = valorA;
+							ele1 = "A";
+						}
+					}
+                    total = total + cartaFuncion;
+                    cout << "\nTotal: " << total << "\n";
+                    if (total > 21) {
+                        cout << "Has perdido ya que te has pasado de 21\n";
+                        cartaNueva = false;
+                    }
+                    else if (total == 21) {
+                        cout << "Has ganado ya que has conseguido 21\n";
+                        cartaNueva = false;
+                    }
+                    break;
+                case 2:
+                    cartaNueva = false;
+                    break;
+                default:
+                    cout << "Error.\n";
+                }
+            }
+            if (total <= 21 && total >= ctotal) {
+                cout << "\nLas cartas del crupier son: \n";
+                cout << cartaC1 << " " << paloC1 << "\n";
+                cout << cartaC2 << " " << paloC2 << "\n";
+
+                while (ctotal <= total) {
+                    cartaFuncion3 = GenerarCarta();
+                    if (cartaFuncion3 == 1 && ctotal < 10) {
+                        cartaFuncion3 = 11;
+                    }
+                    else if (cartaFuncion3 == 1 && ctotal > 10) {
+                            cartaFuncion3 = 1;
+                    }
+                    ctotal = ctotal + cartaFuncion3;
+                    cout << "EL croupier pide una carta \n";
+                    cout << "Ha salido la carta " << cartaFuncion3 << "\n";
+                    cout << "Total: " << ctotal << "\n";
+                    if (ctotal > 21 && cartaC1 == 1) {
+                        cartaC1 == 1;
+                    }
+                    if (ctotal > 21 && cartaC2 == 1) {
+                        cartaC2 == 1;
+                    }
+                    
+                    if (ctotal > 21) {
+
+                        cout << "Has ganado al croupier  \n";
+                        apuestaRealizada = apuestaRealizada * 2;
+                        cout << "El dinero que has apostado se ha doblado: " << apuestaRealizada << "\n";
+                    }
+                    else if(ctotal>total){ cout << "El croupier ha ganado\n"; }
+                }
+            }
+
+            else if (total > 21 || total < ctotal) {
+                cout << "\nLas cartas del crupier son: \n";
+                cout << cartaC1 << " " << paloC1 << "\n";
+                cout << cartaC2 << " " << paloC2 << "\n";
+                cout << "Total:" << ctotal << "\n";
+                cout << "Has perdido el croupier gana la partida\n";
+                apuestaRealizada = 0;
+                cout << "El dinero que has apostado se ha perdido: " << apuestaRealizada << "\n";
+            }
+            cout << "\n¿Quieres volver ha jugar?";
+            cout << " Si(1) / No(2) ";
+            int eleccion;
+            cin >> eleccion;
+            switch (eleccion) {
+            case 1:
+                jugar = true;
+                break;
+            case 2:
+                jugar = false;
+                cout << "ADIOS!";
+                break;
+            default:
+                cout << "Error";
+            }
+        }
+    }
+}
